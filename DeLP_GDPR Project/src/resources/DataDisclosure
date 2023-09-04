@@ -1,0 +1,14 @@
+DataDisclosure(X, Y) -< DataSubject(Y),  DataController(X), Third_party_advertisers(T), Share(X, T, "PersonalData").
+
+~DataDisclosure(X, Y) <- DataSubject(Y),  DataController(X), Third_party_advertisers(T), Share(X, T, "PersonalData"), inform(X, Y, "SharedPersonalData").
+~DataDisclosure(X, Y) <- DataSubject(Y),  DataController(X), Third_party_advertisers(T), Share(X, T, "PersonalData"), consent(X, Y, "SharedPersonalData").
+
+DataSubject(patient).               
+DataController(telehealthserviceserver).           
+Third_party_advertisers(advertiserCompany).
+Share(telehealthserviceserver, advertiserCompany, "PersonalData").
+~inform(telehealthserviceserver, patient, "SharedPersonalData").
+
+
+
+
