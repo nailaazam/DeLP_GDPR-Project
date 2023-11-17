@@ -1,0 +1,22 @@
+~PurposeCompliance(X, Y) -< DataSubject(Y), DataController(X), ProcessingData(X, Y), ~PurposeLimitation(X, Y).
+~PurposeCompliance(X, Y) -< DataSubject(Y), DataController(X), ProcessingData(X, Y), ~SpecificProcessingContext(X, Y).
+~PurposeCompliance(X, Y) -< DataSubject(Y), DataController(X), ProcessingData(X, Y), ~MinimalDataCollection(X, Y).
+~PurposeCompliance(X, Y) -< DataSubject(Y), DataController(X), ProcessingData(X, Y), ~DataRetentionPeriod(X, Y).
+
+PurposeCompliance(X, Y) -< DataSubject(Y), DataController(X), ProcessingData(X, Y), PurposeLimitation(X, Y).
+PurposeLimitation(X, Y) -< ExplicitPurpose(X, Y), ActiveProcessing(X, Y), DataRetentionPeriod(X, Y), DataMinimization(X, Y).
+ExplicitPurpose(X, Y) <- ProcessingData(X, Y), PurposeType(Y, X, "Explicit").
+ActiveProcessing(X, Y) <- DataController(X), ProcessingOngoing(X).
+DataRetentionPeriod(X, Y) <- DataSubject(Y), DataController(X), CollectedData(X, Y), RetentionPeriodDefined(X, Y), RetainedData(X, Y).
+DataMinimization(X, Y) <- DataSubject(Y), DataController(X), CollectedData(X, Y), MinimizedData(X, Y).
+PurposeCompliance(X, Y) -< DataSubject(Y), DataController(X), ProcessingData(X, Y), SpecificProcessingContext(X, Y).
+PurposeCompliance(X, Y) -< DataSubject(Y), DataController(X), ProcessingData(X, Y), MinimalDataCollection(X, Y).
+PurposeCompliance(X, Y) -< DataSubject(Y), DataController(X), ProcessingData(X, Y), DataRetentionPeriod(X, Y).
+DataRetentionPeriod(X, Y)<- DataRetainedPeriodDefined(X, Y).
+UserAccess(X, Y) -< PurposeCompliance(X, Y), PurposeInformation(X, Y).
+
+DataSubject(patient).
+DataController(telehealthserviceserver).
+ProcessingData(telehealthserviceserver, patient).
+~PurposeLimitation(telehealthserviceserver, patient).
+~DataRetentionPeriod(telehealthserviceserver, patient).
