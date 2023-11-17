@@ -1,13 +1,14 @@
 package DeLP_GDPR.delp.examples;
 
+import java.io.BufferedWriter;
+
+import java.io.File;
+import java.io.FileWriter;
 import java.io.FileNotFoundException;
-
-
-
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import org.tweetyproject.commons.ParserException;
-
 import DeLP_GDPR.delp.examples.DeLPExample;
 import DeLP_GDPR.delp.parser.DelpParser;
 import DeLP_GDPR.delp.reasoner.DelpReasoner;
@@ -23,13 +24,13 @@ import DeLP_GDPR.logics.fol.syntax.FolFormula;
 public class DeLPExample {
 	public static void main(String[] args) throws FileNotFoundException, ParserException, IOException{
 		DelpParser parser = new DelpParser();
-		DefeasibleLogicProgram delp = parser.parseBeliefBaseFromFile(DeLPExample.class.getResource("/resources/nonConsent_52").getFile());
+		DefeasibleLogicProgram delp = parser.parseBeliefBaseFromFile(DeLPExample.class.getResource("/resources/nonConsent").getFile());
 		DelpReasoner reasoner = new DelpReasoner(new GeneralizedSpecificity());
 		for (int i = 0; i < 10; i++) {
             long startTime = System.currentTimeMillis();
 
             // Perform the inference steps for the query here
-            FolFormula query = (FolFormula) parser.parseFormula("ConsentCompliance(telehealthserviceserver, patient3)");
+            FolFormula query = (FolFormula) parser.parseFormula("ConsentCompliance(telehealthserviceserver, patient1)");
             System.out.println("Run " + (i + 1) + ": " + query + "\t" + reasoner.query(delp, query));
 
             long endTime = System.currentTimeMillis();
@@ -88,4 +89,5 @@ public class DeLPExample {
 		}	
 		
 	}
+
 }

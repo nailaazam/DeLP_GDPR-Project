@@ -5,12 +5,28 @@ ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ConsentGiven(Y, X)
 ~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~InformedConsent(X, Y).
 ~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~UnambiguousConsent(X, Y).
 ~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~FreelyGivenConsent(X, Y).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ExplicitConsent(Y, X), ConsentExpired(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), Age(Y, Age), Age < 18, ~ParentalConsent(Y, X).
+ParentalConsent(Y, X) <- Parent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~ImpliedConsent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~EmergencyConsent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~ResearchConsent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~HealthDataConsent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~DirectMarketingConsent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~GeneticDataConsent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~ProfileCreationConsent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~BiometricDataConsent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~LocationTrackingConsent(Y, X).
+~ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ~DataSharingConsent(Y, X, Z).
+
 ~ValidConsent(X, Y) -< ConsentGiven(Y, X), RevokeConsent(Y, X).
 
 ~ConsentCompliance(X, Y) <- DataSubject(Y), DataController(X), ConsentGiven(Y, X), ConsentExpired(Y, X).
 ~ConsentCompliance(X, Y) <- DataSubject(Y), DataController(X), ConsentGiven(Y, X), RevokeConsent(Y, X).
 RevokeConsent(Y,X) <- Revoke(Y).
-RevokeConsent(Y, X) <- ConsentExpired(Y, X).
+~RevokeConsent(Y, X) <- ~ConsentExpired(Y, X).
+ConsentCompliance(X, Y) -< DataSubject(Y), DataController(X), ThirdPartyConsent(Y, X).
+ThirdPartyConsent(Y, X) <- ThirdParty(Y, X).
 ValidConsent(X, Y) <- ConsentGiven(Y, X), ActiveConsent(Y, X), SpecificPurposeConsent(Y, X), ExplicitConsent(Y, X).
 ActiveConsent(Y, X) <- ConsentGiven(Y, X), ~RevokeConsent(Y, X).
 SpecificPurposeConsent(Y, X) <- ConsentGiven(Y, X), PurposeType(Y, X, "Specific").
@@ -19,6 +35,19 @@ InformedConsent(X, Y) <- ConsentGiven(Y, X), ConsentType(Y, X, "Informed").
 UnambiguousConsent(X, Y) <- ConsentGiven(Y, X), ConsentType(Y, X, "clearly Indicated Consent").
 FreelyGivenConsent(X, Y) <- ConsentGiven(Y, X), ConsentType(Y, X, "FreelyGiven").
 ~FreelyGivenConsent(X, Y) <- ConsentGiven(Y, X), ~ConsentType(Y, X, "FreelyGiven").
+ImpliedConsent(Y, X) -< DataSubject(Y), DataController(X), ImpliedConsentCondition(Y, X).
+EmergencyConsent(Y, X) -< DataSubject(Y), DataController(X), EmergencySituation(Y, X).
+ResearchConsent(Y, X) -< DataSubject(Y), DataController(X), ResearchPurpose(Y, X).
+HealthDataConsent(Y, X) -< DataSubject(Y), DataController(X), ProcessHealthData(Y, X).
+ProcessHealthData(Y, X) <- HealthData(Y, X).
+DirectMarketingConsent(Y, X) -< DataSubject(Y), DataController(X), DirectMarketingActivities(Y, X).
+GeneticDataConsent(Y, X) -< DataSubject(Y), DataController(X), ProcessGeneticData(Y, X).
+ProcessGeneticData(Y, X) <- GeneticData(Y, X).
+ProfileCreationConsent(Y, X) -< DataSubject(Y), DataController(X), CreateUserProfile(Y, X).
+BiometricDataConsent(Y, X) -< DataSubject(Y), DataController(X), ProcessBiometricData(Y, X).
+ProcessBiometricData(Y, X) <- BiometricData(Y, X).
+LocationTrackingConsent(Y, X) -< DataSubject(Y), DataController(X), TrackLocation(Y, X).
+DataSharingConsent(Y, X, Z) -< DataSubject(Y), DataController(X), ThirdParty(Z), ShareDataWithThirdParty(Y, X, Z).
 
 DataSubject(patient1).
 DataSubject(patient2).
